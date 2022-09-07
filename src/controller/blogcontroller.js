@@ -154,10 +154,9 @@ let deleteByQuery = async function (req, res) {
        
         if (queryCheck == 0) { res.status(404).send({ msg: "can not find the enteries" }) }
         else {
-          
-             for(i=0;i<queryCheck.length;i++){
+            for(i=0;i<queryCheck.length;i++){
             if(queryCheck[i].isDeleted==true)
-            {res.send({msg:"already deleted"})}
+                   {res.send({msg:"already deleted"})}
          
          else{
 
@@ -172,7 +171,8 @@ let deleteByQuery = async function (req, res) {
          }
       }
     }
-  } catch (err) {
+  }
+}catch (err) {
     res.status(500).send({ status: false, msg: "server Error", err: err.message });
   }
 }
