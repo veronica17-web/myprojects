@@ -153,8 +153,6 @@ let deleteByQuery = async function (req, res) {
         let queryCheck = await blogModel.find(filters)
        
         if (queryCheck == 0) { res.status(404).send({ msg: "can not find the enteries" }) }
-
-        
         else {
           
              for(i=0;i<queryCheck.length;i++){
