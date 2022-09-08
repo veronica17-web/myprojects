@@ -1,8 +1,8 @@
-
-const express = require('express')
+ express = require('express')
 
 const router = express.Router()
 const {createAuthor,loginAuthor}= require('../controller/authorController.js')
+
 const {createblog,getBlogByQuery,updateBlogById,deleteById,deleteByQuery}= require("../controller/blogcontroller")
 const{authn,authz} = require('../middleWare/auth')
 
@@ -11,10 +11,13 @@ const{authn,authz} = require('../middleWare/auth')
 router.post('/authors',createAuthor)
 router.post("/login",loginAuthor)
 
+router.put('/blogs/:blogId',updateBlogById)
+
+router.delete("/blogs",deleteByQuery)
 
 //------⭐Blog_routes⭐---------//
 
-router.post('/blogs',authn,authz,createblog)
+router.post('/blogs',authn,createblog)
 
 router.get('/blogs',authn,getBlogByQuery)
 
