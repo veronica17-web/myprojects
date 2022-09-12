@@ -102,13 +102,10 @@ const updateBlogById = async (req, res) => {
 
     if(!blogId)
   return res.send({msg:"enter the blogId"})
-    
-      
+       
 
   if(!isValidObjectId(blogId))
     return res.status(400).send({status:false,msg:"enter the valid blogId"})
-
-  
 
     if (!blogId)
       return res.status(404).send({ status: false, msg: "No Blog Found" });
@@ -141,7 +138,7 @@ const updateBlogById = async (req, res) => {
     if(result.length == 0)
     return res.status(404).send({status:false,msg:"no such blogId doc exist in db"})
 
-    return res.send({ data: result });
+    return res.status(200).send({ status: true,data: result });
   } catch (err) {
     return res
       .status(500)
@@ -155,9 +152,6 @@ const updateBlogById = async (req, res) => {
 const deleteById = async function (req, res) {
   try {
     let blogId = req.params.blogId;
-
-    if(blogId == (":blogId"))
-    return res.send('blogId in parms requied')
 
     if(!isValidObjectId(blogId))
     return res.status(400).send({status:false,msg:"enter the valid blogId "})
@@ -177,32 +171,30 @@ const deleteById = async function (req, res) {
     return res.status(500).send({ msg: error.message })
   }
 }
+
 //-----------------------⭐Delete-blogsBy-queryParams⭐-----------//
 
 
 const deleteByQuery = async (req, res) =>{
   try{
-    let {...data} = req.query; //destructuring the data from the request query
+    let {...data} = req.query; 
     let decodedToken = req.decoded;   
 
     //validating the data for empty values
     if(Object.keys(data).length == 0) return res.send({ status: false, msg: "Fill the Query" });
 
-    if(data.hasOwnProperty('authorId')){ //checking that the authorId is present or not
+    if(data.hasOwnProperty('authorId')){ 
       if(!isValidObjectId(data.authorId)) return res.status(400).send({ status: false, msg: "Enter a valid author Id" });
       if(decodedToken.authorId !== data.authorId) return res.status(403).send({ status: false, msg: "Action Forbidden" })
-      let {...tempData} = data;
-      delete(tempData.authorId); //deleting the authorId from the data
-      let getValues = Object.values(tempData) //getting the values from the data object
-
+      
       
     }
 
-    let timeStamps = new Date(); //getting the current timeStamps
+    let timeStamps = new Date(); 
     
     let getBlogData = await blogModel.find({ authorId: decodedToken.authorId , data });
 
-    //if any blog document doesn't match with  query data
+    //if match not found 
     if (getBlogData.length == 0) {
       return res.status(404).send({ status: false, msg: "No blog found" });
     }
