@@ -13,16 +13,16 @@ let createblog = async function (req, res) {
     let data = req.body;
     let { title, body, authorId, category, isPublished,isDeleted }=data
       
-    if (!title) 
+    if (!title.trim()) 
      return res.status(400).send({ msg: "title is mandatory" });
     
-    if (!body) 
+    if (!body.trim()) 
      return res.status(400).send({ msg: "body is mandatory" });
     
-    if (!authorId) 
+    if (!authorId.trim()) 
     return res.status(400).send({ msg: "authorId is mandatory" });
     
-    if (!category) 
+    if (!category.trim()) 
    return res.status(400).send({ msg: "category is mandatory" });
     
 
@@ -40,7 +40,7 @@ let createblog = async function (req, res) {
     return res.status(400).send({status:false,msg:"enter the valid AuthorId"})
 
     
-    let validAuthorId = await authorModel.findById(authorId) 
+    let validAuthorId = await authorModel.findById(authorId)
     if(!validAuthorId)
     return res.status(404).send({status:false,msg:"no author found with  this AuthorId"})
     let blogCreated = await blogModel.create(data);
@@ -133,7 +133,7 @@ const updateBlogById = async (req, res) => {
         $push: { subcategory: subcategory, tags: tags },
         isPublished: true,
         publishedAt: new Date(),
-        isPublished:true,
+        //isPublished:true,
        
       },
       { new: true }
@@ -207,7 +207,7 @@ const deleteByQuery = async (req, res) =>{
       return res.status(404).send({ status: false, msg: "The Blog is already deleted" });
     }
 
-    data.authorId = decodedToken.authorId;
+    //data.authorId = decodedToken.authorId;
     let deletedBlogs = await blogModel.updateMany(
       data, 
       {isDeleted: true, isPublished: false, deletedAt: timeStamps},

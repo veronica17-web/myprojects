@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken")
 const validEmail = require('email-validator')
 
 
+
 //-------------------------------⭐Create-Author⭐-------------------------------------------------------------------------------
 
 const createAuthor = async (req, res) => {
@@ -13,15 +14,15 @@ const createAuthor = async (req, res) => {
         let { fname, lname, title, email, password } = result
         
         if(Object.keys(result).length == 0) return res.status(400).send({ status: false, msg: "data is required in the body" });
-        if(!fname) 
+        if(!fname.trim()) 
         return res.status(400).send({ msg: "fname is mandatory" })
-        if(!lname)  
+        if(!lname.trim())  
         return res.status(400).send({ msg: "lname is mandatory" }) 
-        if(!title) 
+        if(!title.trim()) 
         return res.status(400).send({ msg: "title is mandatory" }) 
-        if(!email) 
+        if(!email.trim()) 
         return res.status(400).send({ msg: "email is mandatory" }) 
-        if (!password)
+        if (!password.trim())
         return res.status(400).send({ msg: "password is mandatory" })
 
 
@@ -59,11 +60,12 @@ const loginAuthor = async (req, res) => {
         
     let data = req.body
     let { email, password } = data
+    if(Object.keys(data).length == 0) return res.status(400).send({ status: false, msg: "data is required in the body" });
 
-    if(!email) 
+    if(!email.trim()) 
     return res.status(400).send({ msg: "email id is mandatory" })
-
-    if(!password)
+   
+    if(!password.trim())
     return res.status(400).send({ msg: "password is mandatory" }) 
 
     let authorCheck = await authorModel.findOne({ email: email, password: password })
